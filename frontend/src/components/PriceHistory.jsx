@@ -25,8 +25,6 @@ ChartJS.register(
 const PriceHistory = ({ priceData })=> {
   const num_bins = 50;
 
-  console.log(priceData)
-
   const sold_data_N = [
     ...priceData.sold.new
     .filter(item => new Date(item.date) >= new Date('2024-01-01')) // Keep dates >= 2024
@@ -39,7 +37,17 @@ const PriceHistory = ({ priceData })=> {
     .map(item => ({ x: item.date, y: item.price })),
   ];
 
-  const allPrices = [
+  const stock_data_U = [
+    ...priceData.stock.used
+    .map(item=> ({price:item.price}))
+  ]
+
+  const stock_data_N = [
+    ...priceData.stock.new
+    .map(item=> ({price:item.price}))
+  ]
+
+  const all_sold_prices = [
     ...sold_data_N.map((point) => point.y),
     ...sold_data_U.map((point) => point.y),
   ];
@@ -52,7 +60,7 @@ const PriceHistory = ({ priceData })=> {
 
   // CHANGE THIS TO EXISTING PRICES
   let price_bins = {};
-  for (let price in allPrices) {
+  for (let price in all_sold_prices) {
     const bin = Math.floor((price / maxPrice) * num_bins);
     if (price_bins[bin]) {
       price_bins[bin] += 1;
