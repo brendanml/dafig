@@ -1,0 +1,2 @@
+GET http://localhost:5501/
+Content-Type: application/json

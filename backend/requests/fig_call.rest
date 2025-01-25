@@ -1,0 +1,2 @@
+GET http://localhost:5501/items
+Content-Type: application/json
