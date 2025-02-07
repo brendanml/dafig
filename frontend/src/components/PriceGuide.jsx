@@ -12,9 +12,7 @@ const PriceGuide = ({user}) => {
 const api_call = async (searchTerm) => {
   setLoading(true);
   try {
-    const res = await axios.get("/api/price-guide", {
-      params: { fig_id: searchTerm },
-    });
+    const res = await axios.get(`/api/price-guide/${searchTerm}`)
     // If successful, store the data
     setPriceData(res.data);
   } catch (error) {

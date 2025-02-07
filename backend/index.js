@@ -4,12 +4,14 @@ const dotenv = require('dotenv');
 const OAuth = require('oauth');
 const cors = require('cors');
 const path = require('path');
-const User = require('./models/User');
+const {User, Listing, Store, Minifig} = require('./models/models');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const connectDB = require('./config/db');
 
 dotenv.config();
+connectDB();
 app.use(express.json());
 app.use(cors())
 app.use(session({
@@ -27,7 +29,28 @@ app.use(session({
 }))
 
 
-app.get('/price-guide', async (req, res) => {
+app.get('/temp/:fig_id', async (req, res) => {
+    try {
+        if (req.session.user) {
+            console.log(req.session);
+            const listings = await Listing.find({}).populate('store_id').lean();
+            return res.json(listings); // Ensure response is returned
+        }
+
+        const { fig_id } = req.params;
+        console.log("hitting route /temp/:fig_id");
+
+        // Ensure a valid response is sent
+        res.status(200).json({ message: "hit", fig_id: fig_id });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+
+app.get('/price-guide/:fig_id', async (req, res) => {
     // console.log(req.session)
     // console.log(req.session.user)
                 // Helper function to wrap oauth.get in a Promise
@@ -55,7 +78,7 @@ app.get('/price-guide', async (req, res) => {
     if(req.session.user) {
         try {
         
-            const { fig_id } = req.query;
+            const { fig_id } = req.params
             const country = "CA"
         
 
@@ -176,10 +199,6 @@ app.get('/price-guide', async (req, res) => {
     }
 
 });
-
-// app.get('/price-guide', async (req, res) => {
-//     console.log(req.session)
-// });
 
 app.post('/register', async (req, res) => {
     console.log("hitting /register...")

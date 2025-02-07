@@ -21,8 +21,3 @@ Lego Minifigure Pricing Analytics Web Application.
 - **Scraping**: Python (BeautifulSoup)  
 - **Auth**: Custom session & bcrypt  
 
-## Setup  
-1. **Clone the repo**  
-   ```sh
-   git clone https://github.com/brendanml/dafig.git
-   cd dafig
