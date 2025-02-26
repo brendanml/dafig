@@ -1,0 +1,32 @@
+[
+    {
+      "entryPoint": "dc.oxylabs.io",
+      "ip": "93.115.200.155",
+      "port": 8005,
+      "countryCode": "US"
+    },
+    {
+      "entryPoint": "dc.oxylabs.io",
+      "ip": "93.115.200.156",
+      "port": 8004,
+      "countryCode": "US"
+    },
+    {
+      "entryPoint": "dc.oxylabs.io",
+      "ip": "93.115.200.157",
+      "port": 8003,
+      "countryCode": "US"
+    },
+    {
+      "entryPoint": "dc.oxylabs.io",
+      "ip": "93.115.200.158",
+      "port": 8002,
+      "countryCode": "US"
+    },
+    {
+      "entryPoint": "dc.oxylabs.io",
+      "ip": "93.115.200.159",
+      "port": 8001,
+      "countryCode": "US"
+    }
+  ]

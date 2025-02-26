@@ -28,6 +28,14 @@ app.use(session({
     })
 }))
 
+app.get('/listings/:fig_id', async (req, res) => {
+    const { fig_id } = req.params;
+    console.log("hitting route /listings/:fig_id");
+    const listings = await Listing.find({fig_id}).populate('store_id').lean();
+    console.log(listings)
+    return res.json(listings);
+})
+
 
 app.get('/temp/:fig_id', async (req, res) => {
     try {

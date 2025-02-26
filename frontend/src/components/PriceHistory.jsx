@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-moment';
 import PriceBar from './PriceBar';
+import Listings from './Listings';
 
 ChartJS.register(
   ScatterController,
@@ -22,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const PriceHistory = ({ priceData })=> {
+const PriceHistory = ({ priceData, listings })=> {
   const num_bins = 50;
 
   const sold_data_N = [
@@ -124,16 +125,34 @@ const PriceHistory = ({ priceData })=> {
         },
       },
   };
+
+  console.log(priceData)
   
 
   return (
     <div className="price-history">
-      <img className="minifig-picture" src={priceData.data.image_url} alt={`photo of ${priceData.data.name}`} />
+      {/* {
+        priceData.data.name ? <h2>{priceData.data}</h2> : null
+      } */}
+      <div className="price-top">
+        <img className="minifig-picture" src={priceData.data.image_url} alt={`photo of ${priceData.data.name}`} />
+        {
+          listings !== null ? 
+            <Listings listings={listings}/>
+          : <p>Loading listing data...</p>
+
+        }
+        
+      </div>
+      <div className="price-bottom">
+
+      <div className="listings"></div>
       <div className="price-data">
-        <div style={{ width: '800px', margin: '0 auto' }}>
+        <PriceBar priceData={priceData} maxPrice={maxPrice}/>
+        <div style={{ width: '720px', margin: '0 auto' }}>
           <Scatter data={data} options={options} />
         </div>
-        <PriceBar priceData={priceData} maxPrice={maxPrice}/>
+      </div>
       </div>
     </div>
   );

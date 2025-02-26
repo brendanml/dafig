@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import us from '../services/UserService';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/dafig.png';
 
 const Login = ({setUser}) => {
     const [username, setUsername] = useState('');
@@ -54,20 +55,35 @@ const Login = ({setUser}) => {
 
 
     return (
-        <>
-        <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input type="text" name="username" onChange={updateUsername} />
-            </label>
-            <label>
-                Password:
-                <input type="password" name="password" onChange={updatePassword}/>
-            </label>
-            <button type="submit" value={"register"}>Register</button>
-            <button type="submit" value={"login"}>Login</button>
-        </form>
-        </>
+        <div className='login'>
+            <div className="login-top">
+
+            <div className="login-lhs">
+                <img src={logo} alt="" />
+                <p>the data you want, accessible.</p>
+            </div>
+            <div className="login-rhs">
+
+                <form className='login-form' onSubmit={handleSubmit}>
+                    <label>
+                        Username:
+                        <input placeholder='your email...' type="text" name="username" onChange={updateUsername} />
+                    </label>
+                    <label>
+                        Password:
+                        <input placeholder='your password...' type="password" name="password" onChange={updatePassword}/>
+                    </label>
+                    <div className="buttons">
+                        <button className='button' type="submit" value={"register"}>Register</button>
+                        <button className='button' type="submit" value={"login"}>Login</button>
+
+                    </div>
+                </form>
+            </div>
+            </div>
+            <div className="login-bottom"></div>
+
+        </div>
     )
 }
 

@@ -3,33 +3,26 @@ import React, { useEffect, useState } from "react";
 
 function TypingDropdown({ api_call }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [options, setOptions] = useState([]); // Initialize as an empty array
+  const [options, setOptions] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
+  const [isFocused, setIsFocused] = useState(false); // Track input focus
 
   useEffect(() => {
-    // Fetch options from the API
     axios
       .get("/api/items")
       .then((res) => {
-        setOptions(res.data); // Set options from API response
-        setFilteredOptions(res.data); // Initialize filtered options
-        // console.log(res.data);
+        setOptions(res.data);
+        setFilteredOptions(res.data);
       })
-      .catch((error) => {
-        console.error("Error fetching items:", error);
-      })
-      .finally(() => {
-        setLoading(false); // Stop loading indicator
-      });
+      .catch((error) => console.error("Error fetching items:", error))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
-    // Filter options based on ITEMNAME
     setFilteredOptions(
       options.filter((option) =>
         option.ITEMNAME.toLowerCase().includes(value.toLowerCase())
@@ -39,16 +32,18 @@ function TypingDropdown({ api_call }) {
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
-    setSearchTerm(option.ITEMNAME); // Show ITEMNAME in input
-    setFilteredOptions([]); // Close the dropdown
+    setSearchTerm(option.ITEMNAME);
+    setFilteredOptions([]);
+    setIsFocused(false); // Close dropdown
 
-    // Call the api_call function with the selected option
     api_call(option.ITEMID);
   };
 
   return (
-    <div style={{ width: "400px", margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
-      {/* Show loading indicator */}
+    <div
+      style={{ width: "400px", margin: "20px auto", fontFamily: "Arial, sans-serif", position: "relative" }}
+      onBlur={() => setTimeout(() => setIsFocused(false), 200)} // Delay to allow click event
+    >
       {loading ? (
         <p>Loading options...</p>
       ) : (
@@ -57,6 +52,7 @@ function TypingDropdown({ api_call }) {
             type="text"
             value={searchTerm}
             onChange={handleInputChange}
+            onFocus={() => setIsFocused(true)}
             placeholder="Type to search..."
             style={{
               width: "100%",
@@ -66,7 +62,7 @@ function TypingDropdown({ api_call }) {
               borderRadius: "4px",
             }}
           />
-          {filteredOptions.length > 0 && (
+          {isFocused && filteredOptions.length > 0 && (
             <ul
               style={{
                 listStyleType: "none",
@@ -78,6 +74,9 @@ function TypingDropdown({ api_call }) {
                 maxHeight: "150px",
                 overflowY: "auto",
                 backgroundColor: "#fff",
+                position: "absolute",
+                width: "100%",
+                zIndex: 1,
               }}
             >
               {filteredOptions.map((option, index) => (
@@ -97,15 +96,15 @@ function TypingDropdown({ api_call }) {
               ))}
             </ul>
           )}
-          {selectedOption && (
-            <p style={{ marginTop: "10px" }}>
-              Selected: <strong>{selectedOption.ITEMNAME}</strong> (ID:{" "}
-              {selectedOption.ITEMID})
-            </p>
-          )}
+          {/* {selectedOption && (
+            // <p style={{ marginTop: "10px" }}>
+            //   Selected: <strong>{selectedOption.ITEMNAME}</strong> (ID:{" "}
+            //   {selectedOption.ITEMID})
+            // </p>
+          )} */}
         </>
       )}
-    </div>
+    </div> 
   );
 }
 
